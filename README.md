@@ -43,5 +43,7 @@ Switch to python3 for simplication @2019.5.13.
 	3.qq.com         180.153.105.147, 180.153.105.153, 180.153.105.161, 180.153.105.162, 180.153.105.173, 180.153.105.195
 	3g.qq.com        61.151.168.204
 	3d.qq.com        180.153.105.147, 180.153.105.153, 180.153.105.161, 180.153.105.162, 180.153.105.173, 180.153.105.195
-
-
+	...
+	4719 subnames found in total
+	[*]Results are saved to threes files starts with ['qq.com']
+	[*] Program running 1108.9 seconds
