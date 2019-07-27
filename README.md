@@ -44,6 +44,13 @@ Switch to python3 for simplication @2019.5.13.
 	3g.qq.com        61.151.168.204
 	3d.qq.com        180.153.105.147, 180.153.105.153, 180.153.105.161, 180.153.105.162, 180.153.105.173, 180.153.105.195
 	...
-	4719 subnames found in total
-	[*]Results are saved to threes files starts with ['qq.com']
-	[*] Program running 1108.9 seconds
+	zip.mail.qq.com	14.17.19.106
+	zip.m.qq.com	101.227.131.64
+	zip.photo.qq.com	183.61.46.186
+	zip.zg.qq.com	122.228.0.141, 180.153.105.147, 180.153.105.159, 180.153.105.162, 180.153.105.173, 180.153.105.195, 180.153.93.22, 180.153.93.33
+	zip.z.qq.com	61.151.168.204
+                                4365 found | 0 remaining | 151347 scanned in 485.14 seconds
+	4365 subnames found in total
+	[*] Results are saved to threes files starts with ['qq.com']
+	[*] Program running 485.2 seconds 
+
