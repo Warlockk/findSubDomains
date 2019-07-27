@@ -54,3 +54,5 @@ Switch to python3 for simplication @2019.5.13.
 	[*] Results are saved to threes files starts with ['qq.com']
 	[*] Program running 485.2 seconds 
 
+## Sample
+![image](https://raw.githubusercontent.com/starnightcyber/findSubDomains/master/baidu.png)
