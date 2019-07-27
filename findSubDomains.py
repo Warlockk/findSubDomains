@@ -1,18 +1,6 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 """
-    @version : subDomainsBrute 1.0.6
-    @author : lijiejie
-    description : A simple and fast sub domains brute tool for pentesters
-    @contact : my[at]lijiejie.com (http://www.lijiejie.com)
-
-    Modified by : starnight_cyber
-    @contact : starnight_cyber@foxmail.com
-    blog : http://www.cnblogs.com/Hi-blog/
-    Time : 2017.09.23/2019.5.13
-"""
-
-"""
     @2017.09.23
         program description : subDomainsBrute is for finding sub domains of a target domain
         a very simple way turns to be brute force, simple and effective
@@ -21,6 +9,8 @@
         ~ using the found sub domains for further brute force
     @2019.5.13
         For python 3 only
+    @2019.7.27
+        For better presentation
 """
 
 import gevent
@@ -99,7 +89,7 @@ class SubNameBrute:
         self.dns_count = len(self.dns_servers)
 
         sys.stdout.write('\n')
-        dns_info = '[*] Found {} available DNS Servers in total'.format(self.dns_count)
+        dns_info = '[+] Found {} available DNS Servers in total'.format(self.dns_count)
         print(dns_info)
 
         if self.dns_count == 0:
@@ -132,7 +122,7 @@ class SubNameBrute:
         file for read, subname_list for saving sub names
     """
     def _load_subname(self, file, subname_list):
-        self._print_msg('[+] Load sub names ...')
+        self._print_msg('[*] Load sub names ...')
 
         with open(file) as f:
             for line in f:
@@ -180,6 +170,24 @@ class SubNameBrute:
                 sys.stdout.write('\r' + ' ' * (self.console_width - len(msg)) + msg)
         sys.stdout.flush()
 
+    def _print_domain(self, msg):
+        console_width = os.get_terminal_size()[0]
+        msg = '\r' + msg + ' ' * (console_width - len(msg))
+        # msg = '\033[0;31;47m%s{}\033[0m'.format(msg)
+        sys.stdout.write(msg)
+
+
+    def _print_progress(self):
+        """
+            显示扫描进度,显示更美观
+        """
+        msg = '\033[0;31;47m%s\033[0m found | %s remaining | %s scanned in %.2f seconds' % \
+              (self.found_count, self.queue.qsize(), self.scan_count, time.time()- self.start_time)
+
+        console_width = os.get_terminal_size()[0]
+        out = '\r' + ' ' * int((console_width - len(msg)) / 2) + msg
+        sys.stdout.write(out)
+
     """
         important : assign task to resolvers
     """
@@ -187,6 +195,7 @@ class SubNameBrute:
         self.resolvers[j].nameservers = [self.dns_servers[j % self.dns_count]]
         while not self.queue.empty():
             sub = self.queue.get(timeout=1.0)
+            self.scan_count += 1
 
             try:
                 cur_sub_domain = sub + '.' + self.target
@@ -210,9 +219,14 @@ class SubNameBrute:
                 if sub not in self.goodsubs:
                     self.goodsubs.append(sub)
 
+                self.found_count += 1
                 ip_info = '{} \t {}'.format(cur_sub_domain, ips)
-                print(ip_info)
+                # print(ip_info)
                 self.outfile.write(cur_sub_domain + '\t' + ips + '\n')
+                self._print_domain(ip_info)
+                sys.stdout.flush()
+                self._print_progress()
+                sys.stdout.flush()
 
     @staticmethod
     def is_intranet(ip):
@@ -243,7 +257,6 @@ class SubNameBrute:
             sys.stdout.flush()
 
 
-
 if __name__ == '__main__':
     parser = optparse.OptionParser('usage: %prog [options] target.com', version="%prog 2.0")
     parser.add_option('-f', dest='file', default='subnames.txt',
@@ -261,7 +274,7 @@ if __name__ == '__main__':
     # initialization ...
     d = SubNameBrute(target=args[0], options=options)
 
-    print('[*] Exploiting sub domains of ', args[0])
+    print('[*] Exploiting level-one sub domains of ', args[0])
     print('[+] There are %d subs waiting for trying ...' % len(d.queue))
     print('--------------------------------------')
     d.run()
@@ -269,25 +282,21 @@ if __name__ == '__main__':
     print('%d subnames found' % len(d.found_sub))
     print('[*] Program running %.1f seconds ' % (time.time() - d.start_time))
 
-    print('[*] It is usually not recommended to exploit second-level sub domains,because needs to try %d times' \
-          % (len(d.subsubs) * len(d.goodsubs)))
-    go_on = input('[-] Are you consist? YES/NO : ')
-    if go_on == 'YES' or go_on == 'y' or go_on == 'Y' or go_on == 'yes':
-        print('[*]Exploiting second level sub names ...')
+    print('Exploiting level-two sub domains ... ')
+    time.sleep(1)
 
-        d.queue = PriorityQueue()
-        for subsub in d.subsubs:
-            for sub in d.goodsubs:
-                subname = subsub + '.' + sub
-                d.queue.put(subname)
+    d.queue = PriorityQueue()
+    for subsub in d.subsubs:
+        for sub in d.goodsubs:
+            subname = subsub + '.' + sub
+            d.queue.put(subname)
 
-        print('There are %d subs waiting for trying ...' % len(d.queue))
-        d.run()
-    else:
-        pass
-
+    print('There are %d subs waiting for trying ...' % len(d.queue))
+    d.run()
+    print()
+    sys.stdout.flush()
     print('%d subnames found in total' % len(d.found_sub))
-    print('[*]Results are saved to threes files starts with %s' % args)
+    print('[*] Results are saved to threes files starts with %s' % args)
 
     """
         save ips and domains to files
