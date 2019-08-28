@@ -257,6 +257,21 @@ class SubNameBrute:
             sys.stdout.flush()
 
 
+def wildcard_test(dns_servers, domain, level=1):
+    try:
+        r = dns.resolver.Resolver(configure=False)
+        r.nameservers = dns_servers
+        answers = r.query('lijiejie-not-existed-test.%s' % domain)
+        ips = ', '.join(sorted([answer.address for answer in answers]))
+        if level == 1:
+            print('any-sub.%s\t%s' % (domain.ljust(30), ips))
+            wildcard_test(dns_servers, 'any-sub.%s' % domain, 2)
+        elif level == 2:
+            exit(0)
+    except Exception as e:
+        return domain
+
+
 if __name__ == '__main__':
     parser = optparse.OptionParser('usage: %prog [options] target.com', version="%prog 2.0")
     parser.add_option('-f', dest='file', default='subnames.txt',
@@ -273,6 +288,7 @@ if __name__ == '__main__':
 
     # initialization ...
     d = SubNameBrute(target=args[0], options=options)
+    wildcard_test(d.dns_servers, args[0])
 
     print('[*] Exploiting level-one sub domains of ', args[0])
     print('[+] There are %d subs waiting for trying ...' % len(d.queue))
