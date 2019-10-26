@@ -55,4 +55,4 @@ You can find the original project here:： https://github.com/lijiejie/subDomain
 	[*] Program running 485.2 seconds 
 
 ## Sample
-![image](https://raw.githubusercontent.com/starnightcyber/findSubDomains/master/baidu.png)
+![image](https://raw.githubusercontent.com/korsanye/findSubDomains/master/baidu.png)
