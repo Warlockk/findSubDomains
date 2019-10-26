@@ -12,7 +12,8 @@
     @2019.7.27
         For better presentation
 """
-
+import warnings
+warnings.simplefilter("ignore", category=UserWarning)
 import gevent
 from gevent import monkey
 monkey.patch_all()
@@ -58,7 +59,14 @@ class SubNameBrute:
         self._load_subname('dict/next_sub.txt', self.subsubs)
 
         # results will save to target.txt
-        self.outfile = open(target + '.txt', 'a')
+        
+        global path
+        
+        path = os.path.join("results", target)
+        if not os.path.exists(path):
+            os.makedirs(path)
+        
+        self.outfile = open('%s/%s.txt' % (path, target), 'w')
 
         self.ip_dict = set()                            #
         self.found_sub = set()
@@ -317,11 +325,15 @@ if __name__ == '__main__':
     """
         save ips and domains to files
     """
-    with open(args[0]+'-ip.txt', 'w') as f:
+    
+    ipFileName = args[0] + '-ip.txt'
+    subDomainsFileName = args[0] + '-subdomain.txt'    
+    
+    with open(os.path.join(path, ipFileName), 'w') as f:
         for ip in d.ip_dict:
             f.write(ip + '\n')
 
-    with open(args[0] + '-subdomain.txt', 'w') as f:
+    with open(os.path.join(path, subDomainsFileName), 'w') as f:
         for domain in d.found_sub:
             f.write(domain + '\n')
 
