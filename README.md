@@ -2,7 +2,7 @@
 A tool finding sub-domains of a target site for penetesters with python3.
 
 ## Preface
-This script is from starnightcyber/findSubDomains, which is used to detect subdomains. I just make the results files output go the folder reuslts each target have a folder with its name.
+This script is from starnightcyber/findSubDomains, which is used to detect subdomains. I just make the results files output saved to the folder reuslts each target have a folder with its name.
 
 You can find the original project here:： https://github.com/starnightcyber/findSubDomains
 
