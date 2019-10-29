@@ -1,20 +1,18 @@
 # findSubDomains
-A tool finding sub-domains of a target site for us penetesters.
-
-Switch to python3 for simplication @2019.5.13.
+A tool finding sub-domains of a target site for penetesters with python3.
 
 ## Preface
-这个脚本源自lijiejie/subDomainsBrute， 用来探测子域名，我删除了很多代码，也添加了不少注释，使得代码变得更简练和清晰。
+This script is from starnightcyber/findSubDomains, which is used to detect subdomains. I just make the results files output saved to the folder reuslts each target have a folder with its name.
 
-你可以在这看到找到这个项目： https://github.com/lijiejie/subDomainsBrute
+You can find the original project here:： https://github.com/starnightcyber/findSubDomains
 
 ## Dependencies
 
-    pip3 install dnspython gevent
+    python3 -m pip install -r requirements.txt
 
 ## Usage
 
-    python3 findSubDomains.py [your target domain]
+    python3 findSubDomains.py target.com
 
 ## Example
     
@@ -55,4 +53,4 @@ Switch to python3 for simplication @2019.5.13.
 	[*] Program running 485.2 seconds 
 
 ## Sample
-![image](https://raw.githubusercontent.com/starnightcyber/findSubDomains/master/baidu.png)
+![image](https://raw.githubusercontent.com/korsanye/findSubDomains/master/baidu.png)
